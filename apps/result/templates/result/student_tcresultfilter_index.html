@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+
+{% block title %}
+Test Cycle Results
+{% endblock title %}
+
+
+
+{% block breadcrumb %}
+{% endblock breadcrumb %}
+
+
+{% block content-header %}
+<div class="card-header">
+  <div class="card-tools">
+    <form action="" method="get">
+      <div class="input-group input-group">
+          <span class="text-sm">Test Cycle:</span>
+          {% for field in filter.form %}
+          {% if field.required == True %}
+            {{ field | add_class:"form-control form-control-sm text-sm" |add_error_class:"is-invalid" | attr:"required"}}
+          {% else %}
+            {{ field | add_class:"form-control form-control-sm text-sm" |add_error_class:"is-invalid"}}
+          {% endif %}
+          {{field.help_text}}
+          {{field.errors}}
+        {% endfor %}
+        <div class="input-group-append">
+          <button class="btn btn-sm" type="submit">
+            <i class="fas fa-arrow-alt-circle-right"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>  
+</div>
+<div class="card-header">
+  {{ testcycle }}
+  <div class="card-tools">
+    <a href="#" class="btn btn-tool" data-toggle="modal" data-target="#modal1" >
+      <i class="fas fa-plus"></i>
+    </a>
+  </div>
+</div>
+
+{% endblock content-header %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-sm-4">
+      <h3>{{student}}</h3>
+      <h5>{{student.current_class}} {{student.current_section}}</h5>
+      <hr>
+      <div>
+        {% if percent == 0 %}
+        <h4>Percent: NA</h4>
+        {% else %}
+        <h4>Percent: {{percent }}%</h4>
+        {% endif %}
+      </div>
+    </div>   
+    <div class="col-sm-8">
+      {% if tcresult %}
+      <table class="table table-hover table-bordered">
+          <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Max Marks</th>
+            <th>Marks Scored</th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr>          
+            {% for object in tcresult %}
+            <tr>
+              <td>{{ object.subject }}</td>
+              <td>{{ object.max_marks }}</td>
+              <td>{{ object.student_score }}</td>
+              <td><a href="{% url 'result-editstudentresult' object.id %}"><i class="fa fa-edit"></i></a>
+                <a href="{% url 'result-deletestudentresult' object.id %}"><i class="fa fa-trash-alt"></i></a>
+              </td></td>
+            </tr>
+            {% endfor %}           
+          </tbody>
+          <tfoot>
+            <tr>
+            <td>Total</td>
+            <td>{{totalmaxmarks}}</td>
+            <td>{{totalstudentscore}}</td>
+            </tr>
+          </tfoot>
+        </table>
+      {% else %}
+        No results available
+      {% endif %}
+    </div>
+  </div>
+  <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form action="{% url 'result-addstudentresult' student.id %}" method="POST">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add new Test Cycle Result</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+              {% csrf_token %}
+              {% for hidden in tcform.hidden_fields %}
+              {{ hidden }}
+              {% endfor %}              
+              {% for field in tcform.visible_fields %}
+                  <div class="form-group">
+                    {{field.label_tag}}
+                    {{ field|add_class:"form-control" }}
+                    {{field.help_text}}
+                    {{field.errors}}
+                  </div>
+              {% endfor %}
+          </div>
+  
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+

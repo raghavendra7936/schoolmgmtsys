@@ -1,0 +1,5 @@
+django==2.0
+django-widget-tweaks
+django-adminlte3
+django-filter
+mysqlclient

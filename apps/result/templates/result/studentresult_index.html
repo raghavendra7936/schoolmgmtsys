@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Select Student{% endblock title %}
+
+{% block content %}
+  <div class="table-responsive">
+    <table id="studenttable" class="table table-bordered table-hover" data-page-length='100'>
+      <thead class="thead-light">
+        <tr>
+          <th>S/N</th>
+          <th>Fullname</th>
+          <th>Registration Number</th>
+          <th>Current Class</th>
+          <th>Current Section</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for student in students %}
+          <tr class='clickable-row' data-href="{% url 'result-viewstudentresult' student.id %}">
+            <td>{{ forloop.counter}}</td>
+            <td>{{student.firstname }} {{student.middle_name }} {{student.surname }} </td>
+            <td>{{ student.registration_number}}</td>
+            <td>{{ student.current_class}}</td>
+            <td>{{ student.current_section}}</td>
+          </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}
+
+{% block morejs %}
+<script>
+  $('#studenttable').DataTable({
+  });
+</script>
+
+{% endblock morejs %}

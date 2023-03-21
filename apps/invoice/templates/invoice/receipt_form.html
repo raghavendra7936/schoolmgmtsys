@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-8">
+    <form action="" method="POST">
+      {% csrf_token %}
+
+      {% include 'common/form_snippet.html' %}
+
+      <input type="submit" class="btn btn-primary" value="Add payment">
+
+    </form>
+  </div>
+
+  <div class="col-4">
+    <div class="alert alert-info" role="alert">
+      <h3>INVOICE</h3>
+      <p>{{invoice | upper}}</p>
+      <hr>
+      <ul>
+        <li>Academic Year: {{ invoice.academicyear }}</li>
+        <li>Class: {{ invoice.classgrade }}</li>
+        <li>Section: {{ invoice.classsection }}</li>
+        <li>Total Amount Payable: <i class="fas fa-rupee-sign"></i>{{invoice.total_amount_payable | intcomma }}
+        </li>
+        <li>Total Amount Paid: <i class="fas fa-rupee-sign"></i>{{ invoice.total_amount_paid | intcomma }}</li>
+        <li><strong>Balance: <i class="fas fa-rupee-sign"></i>{{invoice.balance | intcomma }}</strong></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock content %}

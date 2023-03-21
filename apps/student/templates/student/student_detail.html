@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content-header %}
+<div class="card-header">
+    {{ object.firstname }} {{ object.surname }}, {{ object.current_class }}  {{ object.current_section }}
+  <div class="card-tools">
+    <span class="badge badge-primary">{{ object.get_current_status_display }}</span>
+    <a href="{% url 'student-update' object.id %}" class="btn btn-tool">
+      <i class="fas fa-edit"></i>
+    </a>
+    <a href="{% url 'student-delete' object.id %}" class="btn btn-tool">
+      <i class="fas fa-trash-alt"></i>
+    </a>
+  </div>
+</div>
+{% endblock content-header %}
+
+{% block content %}
+    <div class="row mb-4">
+      <div class="col-sm-8">
+        <div>
+          <div class="form-group border-bottom row">
+            <label class="col">
+              First Name
+            </label>
+            <div class="col">
+              {{ object.firstname}}
+            </div>
+          </div>
+          <div class="form-group border-bottom row">
+            <label class="col">
+              Middle Name
+            </label>
+            <div class="col">
+              {{ object.middle_name}}
+            </div>
+          </div>
+          <div class="form-group border-bottom row">
+            <label class="col">
+              Surname
+            </label>
+            <div class="col">
+              {{ object.surname}}
+            </div>
+          </div>
+          <div class="form-group border-bottom row">
+            <label class="col">
+              Class & Section
+            </label>
+            <div class="col">
+              {{ object.current_class}} {{ object.current_section}}
+            </div>
+          </div>
+          <div class="form-group border-bottom row">
+            <label class="col">
+              Registration No
+            </label>
+            <div class="col">
+              {{ object.registration_number}}
+            </div>
+          </div>
+          <div class="form-group border-bottom row">
+            <label class="col">
+              Status
+            </label>
+            <div class="col">
+              {{ object.get_current_status_display}}
+            </div>
+          </div>          
+          <div class="form-group border-bottom row">
+            <label class="col">
+              Parent Mobile Number
+            </label>
+            <div class="col">
+              {{ object.parent_mobile_number}}
+            </div>
+          </div>                                                      
+          <div class="form-group border-bottom row">
+            <label class="col">
+              Address
+            </label>
+            <div class="col">
+              {{ object.address }}
+            </div>
+          </div>
+          <div class="form-group border-bottom row">
+            <label class="col">
+              Remarks
+            </label>
+            <div class="col">
+              {{ object.remarks }}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+{% endblock content %}

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block title %}Invoices{% endblock title %}
+
+{% block breadcrumb %}
+<a class="btn btn-primary" href="{% url 'invoice-create' %}"><i
+    class="fas fa-plus"></i> New Invoice</a>
+{% endblock breadcrumb %}
+
+{% block content %}
+  <div class="table-responsive">
+    <table id="invoicetable" class="table table-bordered table-hover">
+      <thead class="thead-light">
+        <tr>
+          <th>S/N</th>
+          <th>Invoice</th>
+          <th>Academic Year</th>
+          <th>Total Payable (<i class="fas fa-rupee-sign"></i>)</th>
+          <th>Total Paid (<i class="fas fa-rupee-sign"></i>)</th>
+          <th>Balance (<i class="fas fa-rupee-sign"></i>)</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for invoice in object_list %}
+          <tr class='clickable-row' data-href="{% url 'invoice-detail' invoice.id %}">
+            <td>{{ forloop.counter}}</td>
+            <td>{{ invoice}} {{ invoice.classgrade }} {{ invoice.classsection }}</td>
+            <td>{{ invoice.academicyear}}</td>
+            <td>{{ invoice.total_amount_payable | intcomma }}</td>
+            <td>{{ invoice.total_amount_paid | intcomma  }}</td>
+            <td>{{ invoice.balance | intcomma }}</td>
+            <td><a class="btn btn-primary btn-sm"
+                href="{% url 'receipt-create' %}?invoice={{ invoice.id }}"">Add new
+                receipt</a></td>
+          </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}
+
+
+{% block morejs %}
+<script>
+   $('#invoicetable').DataTable({
+    select: false
+    });
+</script>
+
+{% endblock morejs %}
